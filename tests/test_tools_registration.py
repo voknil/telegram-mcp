@@ -1,3 +1,4 @@
+from pathlib import Path
 from unittest.mock import MagicMock
 
 from mcp.server.mcpserver import MCPServer
@@ -17,7 +18,7 @@ EXPECTED_TOOLS = {
 
 async def test_register_all_wires_every_module_without_network() -> None:
     mcp = MCPServer("telegram-test")
-    service = TelegramService(MagicMock())
+    service = TelegramService(MagicMock(), Path("state/session"))
 
     register_all(mcp, service)
 

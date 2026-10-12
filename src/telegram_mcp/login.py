@@ -11,7 +11,7 @@ import qrcode
 from telethon import errors
 
 from telegram_mcp.config import get_settings
-from telegram_mcp.service import TelegramService
+from telegram_mcp.service import TelegramService, harden_session_file
 
 
 def print_qr(url: str) -> None:
@@ -25,6 +25,7 @@ async def run_login() -> None:
     service = TelegramService.from_settings()
     client = service.client
     await client.connect()
+    harden_session_file(service.session_path)
 
     if await client.is_user_authorized():
         me = await client.get_me()
@@ -51,6 +52,7 @@ async def run_login() -> None:
             await client.sign_in(password=pw)
             break
 
+    harden_session_file(service.session_path)
     me = await client.get_me()
     print(f"\nLogged in as @{me.username or me.id}. Session saved to {get_settings().telegram_session_path}")
     await client.disconnect()

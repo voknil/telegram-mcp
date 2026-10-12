@@ -1,3 +1,4 @@
+from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -9,7 +10,7 @@ from telegram_mcp.service import TelegramService
 def service() -> TelegramService:
     client = MagicMock()
     client.get_entity = AsyncMock(return_value="entity")
-    return TelegramService(client)
+    return TelegramService(client, Path("state/session"))
 
 
 @pytest.mark.parametrize(
